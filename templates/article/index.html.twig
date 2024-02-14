@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Article{% endblock %}
+
+{% block body %}
+<div class="m-auto w70 my-4">
+    <h1 class="titre text-light center"> ListeArticle </h1>
+    <div class="d-flex justify-content-between mt-4">
+        <a href="{{ path('app_article_new') }}" class="btn btn-sm  bg_affich  me-2"><ion-icon name="add-circle-outline"></ion-icon>Nouvel article</a>
+        <a href="{{ path('app_article_new') }}" class="btn btn-sm  bg_modif  me-2"><ion-icon name="document-outline"></ion-icon>Excel</a>
+        </div>
+
+
+    <table class=" table table-striped table-bordered mt-4">
+        <thead>
+            <tr>
+                <th class="w10">Id</th>
+                <th class="w100">NumArticle</th>
+                <th class="w30">Designation</th>
+                <th class="w20">PrixUnitaire</th>
+                <th class="w20">actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for article in articles %}
+            <tr>
+                <td>{{ article.id }}</td>
+                <td>{{ article.numArticle }}</td>
+                <td>{{ article.designation }}</td>
+                <td class="text-center">{{ article.prixUnitaire }}</td>
+                <td class="d-flex justify-content-between px-4">
+                    <a class="btn btn-sm  bg_affich  me-2" href="{{ path('app_article_show', {'id': article.id}) }}"><ion-icon name="eye-outline"></ion-icon>Afficher</a>
+                    <a class="btn btn-sm  bg_modif  me-2" href="{{ path('app_article_edit', {'id': article.id}) }}"><ion-icon name="pencil-outline"></ion-icon>Modifier</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+{% endblock %}

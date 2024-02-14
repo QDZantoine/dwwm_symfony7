@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste client{% endblock %}
+
+{% block body %}
+    <div class="m-auto w80 my-4">
+        <h1 class="titre center text-light">LISTE CLIENTS</h1>
+        <div class="div-btn">
+            <a href="javascript:creer()" class="btn btn-sm bg_affich mb-2" ><ion-icon name="add-circle-outline"></ion-icon>Nouveau client</a>
+            <a href="javascript:afficher()" class="btn btn-sm bg_affich mb-2" ><ion-icon name="eye-outline"></ion-icon>Afficher</a>
+            <a href="javascript:modifier()" class="btn btn-sm bg_affich mb-2" ><ion-icon name="pencil-outline"></ion-icon>Modifier</a>
+            <a href="javascript:supprimer()" class="btn btn-sm bg_affich mb-2" ><ion-icon name="trash-outline"></ion-icon>Supprimmer</a>
+            <a href="javascript:writeExcel()" class="btn btn-sm bg_affich mb-2" ><ion-icon name="document-outline"></ion-icon>Excel</a>
+        </div>
+        <table class="w100 table table-striped table-bordered" >
+            <thead id="thead_client">
+                <tr class="bg_gray">
+                <th class="w10"></th>
+                <th>ID</th>
+                <th>CODE</th>
+                <th>NOM</th>
+                <th>ADRESSE</th>
+                </tr>
+            </thead>
+            <tbody id="tbody_client">
+                {% for client in clients %}
+                <tr>
+                    <td><input type="checkbox" value="{{client.id}}" id="{{client.id}}" name="check" onclick="onlyOne(this)"></td>
+                    <td>{{client.id}}</td>
+                    <td>{{client.numClient}}</td>
+                    <td>{{client.nomClient}}</td>
+                    <td>{{client.adresseClient}}</td>
+                </tr>
+                {%endfor%}
+            </tbody>
+
+            <tfoot id="tfoot_client">
+            <tr class=" bg_gray center">
+                <td class="center" colspan="5">Nombre Clients {{nbre}}</td>
+            </tr>
+            </tfoot>
+
+        </table>
+    </div>
+   
+{% endblock %}
+{% block script %}
+    <script>
+        const url_edit = '/client/edit/id';
+        const url_delete = '/client/delete/id';
+        function modifier(){
+            
+            const id=getIdChecked('check');
+            if(id==0){
+                alert("Veuillez selectionner une ligne");
+                return;
+            }
+            const url=url_edit.replace('id',id);
+            document.location.href=url;
+        }
+        function creer() {
+            const url=url_edit.replace('id',0);
+            document.location.href=url;
+        }
+        function supprimer() {
+            const id=getIdChecked('check');
+            if(id==0){
+                alert("Veuillez selectionner une ligne");
+                return;
+            }
+            const response=confirm("Etes vous sur vouloir supprimer ce client ?");
+            if(response){
+                const url=url_delete.replace('id',id);
+                document.location.href=url;
+            }
+         
+        }
+
+    </script>
+    {% endblock %}
