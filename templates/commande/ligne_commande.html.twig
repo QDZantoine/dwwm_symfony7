@@ -1,0 +1,133 @@
+{% extends "base.html.twig" %} {% block title %}Ligne Commande{% endblock %} {%
+block body %}
+<div class="m-auto my-4 w90">
+  <h1 class="center text-light">SAISIE LIGNE COMMANDE</h1>
+  <div class="row">
+    <div class="col-md-8 my-4">
+      <input type="text" id="commande_id" name="commande_id" value="{{commande.id}}" class="hidden">
+        <div class="my-2">
+            <label for="" class="lab30">N° Commande :</label>
+            <input type="text" value="{{commande.numCommande}}" class="from-control w40" disabled>
+        </div>
+        <div class="my-2">
+            <label for="" class="lab30">Date :</label>
+            <input type="text" value="{{commande.dateCommande|date('d/m/Y')}}" class="from-control w40" disabled>
+        </div>
+        <div class="my-2">
+            <label for="" class="lab30">Client :</label>
+            <input type="text" value="{{commande.client.nomClient}}" class="from-control w40" disabled>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+    <p id="total" class="w100 fs-1  bg_gray text-light  radius-10  h-100 d-flex align-items-center justify-content-center">{{total~"€"}}</p>
+    </div>
+  </div>
+  <table class="w100 table table-striped mt-4 mr-4">
+  <thead>
+    <tr class="bg_gray text-light"  >
+      <th class="w20" >CODE</th>
+      <th class="w50" >Designation</th>
+      <th class="w10" >PU</th>
+      <th class="w10" >Quantite</th>
+      <th class="w10" >Montant</th>
+    </tr>
+
+    <tr class=""  >
+      <th class="" ><input onkeydown="searchCode(event)" type="text" id="numArticle" value="" class="form-control w100"></th>
+      <th class="" id="designation" ></th>
+      <th class="" id="prixUnitaire" ></th>
+      <th class=""><input onkeydown="valider(event)" type="text" id="quantite" name="quantite" value="" class="form-control w100 right"></th>
+      <th class="right"><button class="btn btn-sm btn-success">Valider</button></th>
+    </tr>
+  </thead>
+  <tbody id="tbody_row">
+  {% for row in rows %}
+  <tr>
+    <td class="left" >{{row.numArticle}}</td>
+    <td class="left" >{{row.designation}}</td>
+    <td class="right" >{{row.prixUnitaire}}</td>
+    <td class="right" >{{row.quantite}}</td>
+    <td class="right" >{{row.montant}}</td>
+  </tr>
+    
+  {% endfor %}   
+  
+  </tbody>
+
+  <tfoot>
+  <tr class="bg_gray text-light">
+    <th colspan="4"  class="center fw-bold">Total</th>
+    <th  id="tfoot_total" class="right fw-bold">{{total}}</th>
+  </tr> 
+  </tfoot>
+    
+  </table>
+</div>
+{% endblock %} {% block script %}
+<script>
+  const url_search_code = "{{path('app_commande_search_code')}}";
+  const url_submit = "{{path('app_commande_submit')}}";
+
+  function valider(event){
+    if(event.keyCode==13){
+      let xhr = new XMLHttpRequest();
+      xhr.open('POST',url_submit);
+      let data = new FormData();
+      data.append('commande_id',commande_id.value);
+      data.append('numArticle',numArticle.value);
+      data.append('quantite',quantite.value);
+      xhr.send(data);
+      xhr.onload=()=>{
+        let response=xhr.responseText;
+        let responses=JSON.parse(response);
+        const rows=responses['rows'];
+        const total_commande=responses['total'];
+        total.innerHTML=total_commande+"€";
+        tfoot_total.innerHTML=total_commande;
+        let html=rows.map(function(row){
+          return `
+          <tr>
+    <td class="left" >${row.numArticle}</td>
+    <td class="left" >${row.designation}</td>
+    <td class="right" >${row.prixUnitaire}</td>
+    <td class="right" >${row.quantite}</td>
+    <td class="right" >${row.montant}</td>
+  </tr>
+    `
+        }).join('');
+        tbody_row.innerHTML=html;
+        numArticle.value='';
+        quantite.value='';
+        designation.innerHTML='';
+        prixUnitaire.innerHTML='';
+
+      }
+    }
+
+  }
+
+  function searchCode(event){
+    if(event.keyCode == 13){
+      let xhr= new XMLHttpRequest();
+      xhr.open('POST',url_search_code);
+      let data=new FormData();
+      data.append("numArticle",numArticle.value);
+      xhr.send(data);
+      xhr.onload=()=>{
+          const response=xhr.responseText;
+          const article=JSON.parse(response);
+          if(article){
+            designation.innerHTML=article.designation;
+            prixUnitaire.innerHTML=article.prixUnitaire;
+            prixUnitaire.focus();
+
+          }
+          
+      }
+    }
+  }
+
+
+</script>
+{% endblock %}

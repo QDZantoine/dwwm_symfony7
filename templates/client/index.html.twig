@@ -12,6 +12,7 @@
             <a href="javascript:supprimer()" class="btn btn-sm bg_affich mb-2" ><ion-icon name="trash-outline"></ion-icon>Supprimmer</a>
             <a href="javascript:writeExcel()" class="btn btn-sm bg_affich mb-2" ><ion-icon name="document-outline"></ion-icon>Excel</a>
         </div>
+        <a id="excel" class="hidden" href="{{asset('partage_document/liste_clients.xlsx')}}" download>Exporter</a>
         <table class="w100 table table-striped table-bordered" >
             <thead id="thead_client">
                 <tr class="bg_gray">
@@ -46,8 +47,37 @@
 {% endblock %}
 {% block script %}
     <script>
+        const url_show='/client/show/id';
         const url_edit = '/client/edit/id';
         const url_delete = '/client/delete/id';
+        const url_export_excel="{{path('app_client_export_excel')}}";
+        // const url_show="{{path('app_client_show',{'id':'id'})}}"; exemple avec path
+
+    function writeExcel(){
+        let xhr=new XMLHttpRequest();
+        xhr.open('POST',url_export_excel);
+        xhr.send();
+        xhr.onload=function(){
+            const response = xhr.responseText;
+            alert(response);
+            excel.click();
+        }
+     
+
+    }
+    function afficher(){
+
+        const id=getIdChecked('check');
+        if(id==0){
+              alert("Veuillez selectionner une ligne");
+                return;
+        }else{
+            const url=url_show.replace('id',id);
+            document.location.href=url;
+        }
+    }
+
+
         function modifier(){
             
             const id=getIdChecked('check');

@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Commande index{% endblock %}
+
+{% block body %}
+    <h1>Liste des commandes</h1>
+        <div class="btn m-2 print-none">
+            <a class="btn btn-sm bg_affich my-2" href="{{ path('app_commande_new') }}"><ion-icon name="add-circle-outline"></ion-icon><br> Nouvelle Commande</a>
+            <a class="btn btn-sm bg_affich"  href="javascript:window.print()"><ion-icon name="print-outline"></ion-icon><br>Imprimmer</a>
+            <a class="btn btn-sm bg_affich"  href="javascript:void()"><ion-icon name="document-outline"></ion-icon><br>Excel</a>
+        </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>CODE</th>
+                <th>N° COMMANDE</th>
+                <th>DATE</th>
+                <th>ACTIONS</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for commande in commandes %}
+            <tr>
+                <td>{{ commande.id }}</td>
+                <td>{{ commande.numCommande }}</td>
+                <td>{{ commande.dateCommande ? commande.dateCommande|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a class="btn btn-sm bg_affich" href="{{ path('app_commande_show', {'id': commande.id}) }}"><ion-icon name="eye-outline"></ion-icon><br>Afficher</a>
+                    <a  class="btn btn-sm bg_affich" href="{{path('app_commande_content',{'id': commande.id})}}"><ion-icon name="pricetag-outline"></ion-icon><br>Commander</a>
+                    <a class="btn btn-sm bg_affich" href="{{ path('app_commande_edit', {'id': commande.id}) }}"><ion-icon name="pencil-outline"></ion-icon><br>Modifier</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    
+{% endblock %}

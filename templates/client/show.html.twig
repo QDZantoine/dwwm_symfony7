@@ -1,0 +1,51 @@
+{% extends "base.html.twig" %} {% block title %}AFFICHAGE CLIENT{% endblock %}
+{% block body %} {#{dump(client)}#}
+<div class="m-auto w50 my-4">
+  <h1 class="titre text-light center">AFFICHAGE CLIENT</h1>
+  <table class="table table-striped">
+    <tr>
+      <td class="w30">CODE</td>
+      <td>{{ client.numClient }}</td>
+    </tr>
+    <tr>
+      <td class="w30">NOM</td>
+      <td>{{ client.nomClient }}</td>
+    </tr>
+    <tr>
+      <td class="w30">ADRESSE</td>
+      <td>{{ client.adresseClient }}</td>
+    </tr>
+  </table>
+  <div class="div-btn">
+    <button class="btn btn-md bg_affich" onclick="retour()">
+      Retour à la liste <br /><ion-icon
+        name="return-down-back-outline"
+      ></ion-icon>
+    </button>
+    <button class="btn btn-md bg_suppr" onclick="supprimer()">
+      Supprimer <br /><ion-icon name="trash-outline"></ion-icon>
+    </button>
+  </div>
+</div>
+{% endblock %} {% block script %}
+<script>
+      function retour() {
+    // document.location.href = "/client";
+    document.location.href = "{{path('app_client')}}";
+  }
+  function supprimer() {
+    const response=confirm("Voulez-vous vraiment supprimer ce client ?");
+    if(response){
+        const id="{{client.id}}";
+    const url="{{path('app_client_delete',{'id':client.id})}}";
+    document.location.href="{{path('app_client')}}";
+
+    }
+    
+
+
+   
+  }
+</script>
+
+{% endblock %}

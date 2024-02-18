@@ -2,14 +2,14 @@
 
 namespace App\Entity;
 
-use App\Repository\ArticleRepository;
+use App\Repository\CommandeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ArticleRepository::class)]
-class Article
+#[ORM\Entity(repositoryClass: CommandeRepository::class)]
+class Commande
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -17,15 +17,16 @@ class Article
     private ?int $id = null;
 
     #[ORM\Column(length: 20)]
-    private ?string $numArticle = null;
+    private ?string $numCommande = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $designation = null;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $dateCommande = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
-    private ?string $prixUnitaire = null;
+    #[ORM\ManyToOne(inversedBy: 'commandes')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Client $client = null;
 
-    #[ORM\OneToMany(targetEntity: LigneCommande::class, mappedBy: 'article')]
+    #[ORM\OneToMany(targetEntity: LigneCommande::class, mappedBy: 'commande')]
     private Collection $ligneCommandes;
 
     public function __construct()
@@ -38,38 +39,38 @@ class Article
         return $this->id;
     }
 
-    public function getNumArticle(): ?string
+    public function getNumCommande(): ?string
     {
-        return $this->numArticle;
+        return $this->numCommande;
     }
 
-    public function setNumArticle(string $numArticle): static
+    public function setNumCommande(string $numCommande): static
     {
-        $this->numArticle = $numArticle;
+        $this->numCommande = $numCommande;
 
         return $this;
     }
 
-    public function getDesignation(): ?string
+    public function getDateCommande(): ?\DateTimeInterface
     {
-        return $this->designation;
+        return $this->dateCommande;
     }
 
-    public function setDesignation(string $designation): static
+    public function setDateCommande(\DateTimeInterface $dateCommande): static
     {
-        $this->designation = $designation;
+        $this->dateCommande = $dateCommande;
 
         return $this;
     }
 
-    public function getPrixUnitaire(): ?string
+    public function getClient(): ?Client
     {
-        return $this->prixUnitaire;
+        return $this->client;
     }
 
-    public function setPrixUnitaire(?string $prixUnitaire): static
+    public function setClient(?Client $client): static
     {
-        $this->prixUnitaire = $prixUnitaire;
+        $this->client = $client;
 
         return $this;
     }
@@ -86,7 +87,7 @@ class Article
     {
         if (!$this->ligneCommandes->contains($ligneCommande)) {
             $this->ligneCommandes->add($ligneCommande);
-            $ligneCommande->setArticle($this);
+            $ligneCommande->setCommande($this);
         }
 
         return $this;
@@ -96,8 +97,8 @@ class Article
     {
         if ($this->ligneCommandes->removeElement($ligneCommande)) {
             // set the owning side to null (unless already changed)
-            if ($ligneCommande->getArticle() === $this) {
-                $ligneCommande->setArticle(null);
+            if ($ligneCommande->getCommande() === $this) {
+                $ligneCommande->setCommande(null);
             }
         }
 
