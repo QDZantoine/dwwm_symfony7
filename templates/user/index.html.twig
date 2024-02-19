@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User index{% endblock %}
+
+{% block body %}
+    <h1 class="my-4 text-center">Users</h1>
+     <a class="btn btn-md bg_modif m-2" href="{{ path('app_user_new') }}"><ion-icon name="add-circle-outline"></ion-icon><br>Create new</a>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Username</th>
+                <th>Roles</th>
+                <th>Password</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
+                <td>******</td>
+                <td>
+                    <a class="btn btn-md bg_affich" href="{{ path('app_user_show', {'id': user.id}) }}"><ion-icon name="eye-outline"></ion-icon><br>show</a>
+                    <a class="btn btn-md bg_modif" href="{{ path('app_user_edit', {'id': user.id}) }}"><ion-icon name="pencil-outline"></ion-icon><br>edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+   
+{% endblock %}

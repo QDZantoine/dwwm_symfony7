@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Role index{% endblock %}
+
+{% block body %}
+    <h1 class="my-4 text-center">Role index</h1>
+
+    <a class="btn btn-md bg_modif m-2" href="{{ path('app_role_new') }}"><ion-icon name="add-circle-outline"></ion-icon><br>Create new</a>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Rang</th>
+                <th>Libelle</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for role in roles %}
+            <tr>
+                <td>{{ role.id }}</td>
+                <td>{{ role.rang }}</td>
+                <td>{{ role.libelle }}</td>
+                <td>
+                    <a class="btn btn-md bg_affich" href="{{ path('app_role_show', {'id': role.id}) }}"><ion-icon name="eye-outline"></ion-icon><br>show</a>
+                    <a class="btn btn-md bg_modif" href="{{ path('app_role_edit', {'id': role.id}) }}"><ion-icon name="pencil-outline"></ion-icon><br>edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
