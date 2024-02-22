@@ -1,0 +1,18 @@
+{% extends "base.html.twig" %}
+{% block title %}Menu{% endblock %}
+{% block body %}
+<div class="m-auto w50 my-a ">
+<h1 class="titre text-light" >SAISIE MENU</h1>
+{{form_start(form)}}
+{{form_widget(form)}}
+<div class="div-btn">
+<a href="{{path('app_menu')}}" class="btn btn-sm bg_affich my-4">Retour à la liste<br><ion-icon name="return-down-back-outline"></ion-icon> </a>
+    <button type="submit" class="btn btn-md bg_modif my-4" value="Enregistrer">Enregistrer <br><ion-icon name="save-outline"></ion-icon></button>
+</div>
+
+{{form_end(form)}}
+
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,112 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Menu
+{% endblock %}
+
+{% block body %}
+	<div class="m-auto w80 my-4">
+		<h1 class="titre center text-light">
+			Liste Menu</h1>
+		<div class="div-btn">
+			<a href="javascript:creer()" class="btn btn-sm bg_affich mb-2">
+				<ion-icon name="add-circle-outline"></ion-icon>Nouveau Menu</a>
+			<a href="javascript:afficher()" class="btn btn-sm bg_affich mb-2">
+				<ion-icon name="eye-outline"></ion-icon>Afficher</a>
+			<a href="javascript:modifier()" class="btn btn-sm bg_affich mb-2">
+				<ion-icon name="pencil-outline"></ion-icon>Modifier</a>
+			<a href="javascript:supprimer()" class="btn btn-sm bg_affich mb-2">
+				<ion-icon name="trash-outline"></ion-icon>Supprimmer</a>
+			<a href="javascript:writeExcel()" class="btn btn-sm bg_affich mb-2">
+				<ion-icon name="document-outline"></ion-icon>Excel</a>
+		</div>
+		<a id="excel" class="hidden" href="#" download>Exporter</a>
+		<table class="w100 table table-striped table-bordered">
+			<thead id="thead_menu">
+				<tr class="bg_gray">
+					<th class="w10"></th>
+					<th>LIBELLE</th>
+					<th>URL</th>
+					<th>ICON</th>
+					<th>ROLE</th>
+				</tr>
+			</thead>
+			<tbody id="tbody_menu">
+				{{menu|raw}}
+			</tbody>
+
+			<tfoot id="tfoot_menu">
+				<tr class=" bg_gray center">
+					<td class="center" colspan="5">Nombre de Menus  :
+						{{nbre}}</td>
+				</tr>
+			</tfoot>
+
+		</table>
+	</div>
+
+{% endblock %}
+{% block script %}
+	<script>
+		let url_show ='{{ path('app_menu_show',{'id':'id'}) }}'; // menu/show/id;
+let url_edit = '{{ path('app_menu_edit',{'id':'id'}) }}'; // menu/edit/id;
+let url_delete = '{{ path('app_menu_delete') }}';
+let url_menu ='{{ path('app_menu') }}';
+
+function supprimer() {
+const id = getIdChecked('check');
+if (! id) { // id==0
+alert('Veuillez selectionner une ligne !');
+return;
+
+}
+const confirmation = confirm("Etes vous sur de vouloir supprimer ce menu ?");
+if (confirmation) {
+let xhr = new XMLHttpRequest();
+xhr.open('POST', url_delete);
+let data=new FormData();
+data.append('id', id);
+xhr.send(data);
+xhr.onload = () => {
+let response = xhr.responseText;
+response = JSON.parse(response);
+alert(response['message']);
+if (response['ok'] == 1) {
+document.location.href = url_menu;
+}
+
+ 
+}
+
+}
+
+}
+
+
+function modifier() {
+const id = getIdChecked('check');
+if (id == 0) {
+alert("Veuillez selectionner une ligne");
+return;
+}
+const url = url_edit.replace('id', id);
+document.location.href = url;
+
+}
+function creer() {
+const url = url_edit.replace('id', 0);
+document.location.href = url;
+}
+
+function afficher() {
+
+const id = getIdChecked('check');
+if (id == 0) {
+alert("Veuillez selectionner une ligne");
+return;
+} else {
+const url = url_show.replace('id', id);
+document.location.href = url;
+}
+}
+	</script>
+{% endblock %}

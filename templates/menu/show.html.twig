@@ -1,0 +1,58 @@
+{% extends "base.html.twig" %} {% block title %}AFFICHAGE MENU{% endblock %}
+{% block body %} 
+<div class="m-auto w50 my-4">
+  <h1 class="titre text-light center">AFFICHAGE MENU</h1>
+  <table class="table table-striped">
+    <tr>
+      <td class="w30">RANG</td>
+      <td>{{ menu.rang }}</td>
+    </tr>
+    <tr>
+      <td class="w30">LIBELLE</td>
+      <td>{{ menu.libelle }}</td>
+    </tr>
+    <tr>
+      <td class="w30">URL</td>
+      <td>{{ menu.url }}</td>
+    </tr>
+     <tr>
+      <td class="w30">ICON</td>
+      <td><ion-icon name="{{menu.icon}}"></ion-icon></td>
+    </tr>
+     <tr>
+      <td class="w30">ROLE</td>
+      <td>{{ menu.role }}</td>
+    </tr>
+  </table>
+  <div class="div-btn">
+    <button class="btn btn-md bg_affich" onclick="retour()">
+      Retour à la liste <br /><ion-icon
+        name="return-down-back-outline"
+      ></ion-icon>
+    </button>
+    <button class="btn btn-md bg_suppr" onclick="supprimer()">
+      Supprimer <br /><ion-icon name="trash-outline"></ion-icon>
+    </button>
+  </div>
+</div>
+{% endblock %} {% block script %}
+<script>
+      function retour() {
+    document.location.href = "{{path('app_menu')}}";
+  }
+  function supprimer() {
+    const response=confirm("Voulez-vous vraiment supprimer ce menu ?");
+    if(response){
+         const id="{{menu.id}}";
+    const url="{{path('app_menu_delete',{'id':menu.id})}}";
+    document.location.href="{{path('app_menu')}}";
+
+    }
+    
+
+
+   
+  }
+</script>
+
+{% endblock %}
