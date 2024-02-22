@@ -25,220 +25,155 @@
 					<i class="fa fa-bars"></i>
 				</a>
 				<div class="collapse navbar-collapse justify-content-between" id="nav">
-					<ul class="navbar-nav px-2">
-						<li class="nav-item">
-							<a href="/" class="nav-link text-light fw-bold text-1em">
-								<ion-icon name="home-outline"></ion-icon>ACCEUIL</a>
-						</li>
-						{#%if(is_granted('ROLE_DEPOT'))%#}
-							<li class="nav-item">
-								<a href="/article" class="nav-link text-light fw-bold text-1em">
-									<ion-icon name="pricetag-outline"></ion-icon>ARTICLE</a>
-							</li>
-							<li class="nav-item">
-								<a href="/" class="nav-link text-light fw-bold text-1em">
-									<ion-icon name="pricetags-outline"></ion-icon>ARTICLE-AJAX</a>
-							</li>
-							<li class="nav-item">
-								<a href="{{path('app_client')}}" class="nav-link text-light fw-bold text-1em">
-									<ion-icon name="accessibility-outline"></ion-icon>CLIENT</a>
-							</li>
-							{#%endif%#}
-							{#%if(is_granted('ROLE_CAISSE'))%#}
-								<li class="nav-item dropdown">
-									<a href="/" class="nav-link text-light fw-bold dropdown-toggle text-1em" data-bs-toggle="dropdown" data-bs-auto-close="outside">
-										<ion-icon name="bag-add-outline"></ion-icon>COMMANDE</a>
-									<ul class="dropdown-menu">
-										<li class="nav-item">
-											<a href="{{path('app_commande_index')}}" class="nav-link text-1em">FACTURE</a>
-										</li>
-										<li class="nav-item">
-											<a href="/" class="nav-link text-1em">DEVIS</a>
-										</li>
-										<li class="nav-item dropend">
-											<a href="/" class="nav-link text-1em dropdown-toggle" data-bs-toggle="dropdown">LIVRAISON</a>
-											<ul class="dropdown-menu">
-												<li class="nav-item">
-													<a href="/" class="nav-link text-1em">DOMICILE</a>
-												</li>
-												<li class="nav-item">
-													<a href="/" class="nav-link text-1em">MAGASIN</a>
-												</li>
-											</ul>
-										</li>
-									</ul>
-								</li>
-								{#%endif%#}
-								<!-- <li class="nav-item"><a href="user" class="nav-link text-light fw-bold"><ion-icon name="people-circle-outline"></ion-icon>Users</a></li>
-								                    <li class="nav-item"><a href="" class="nav-link text-light fw-bold"><ion-icon name="construct-outline"></ion-icon>Parametre</a></li> -->
-								{#%if(is_granted('ROLE_ADMIN'))%#}
-									<li class="nav-item dropdown">
-										<a href="" class="nav-link text-primary text-light fw-bold dropdown-toggle" data-bs-toggle="dropdown"><ion-icon name="settings-outline"></ion-icon>PARAMETRE</a>
-										<ul class="dropdown-menu">
-											<li class="nav-item">
-												<a href="{{path('app_user_index')}}" class="nav-link">User</a>
-											</li>
-											<li class="nav-item">
-												<a href="{{path('app_role_index')}}" class="nav-link">Role</a>
-											</li>
-											<li class="nav-item">
-												<a href="{{path('app_menu')}}" class="nav-link">Menu</a>
-											</li>
-										</ul>
+				{{render(url('app_menu_dynamique'))}}
+					<div action="">
+						<div class="input-group">
+							<input autocomplete="off" onkeydown="touche(event)" id="word" name="word" type="text" class="form-control mx-1 input-search" placeholder="Mot à chercher">
+							<a href="javascript:search()" class="btn bg-gray">
+								<ion-icon name="search-outline"></ion-icon>
+							</a>
+							<a href="" class="mx-2 dropdown-toggle text-light" data-bs-toggle="dropdown">
+								<ion-icon name="notifications-outline"></ion-icon>
+								<sup class="text-light">(5)</sup>
+							</a>
+							<ul class="dropdown-menu w100 bg_gray">
+
+								<li class="nav-item p-2 w-100">Message - 01</li>
+								<li class="nav-item p-2 w-100">Message - 02</li>
+								<li class="nav-item p-2 w-100">Message - 03</li>
+								<li class="nav-item p-2 w-100">Message - 04</li>
+								<li class="nav-item p-2 w-100">Message - 05</li>
+								<li class="nav-item p-2 w-100">Message - 06</li>
+							</ul>
+							{%if app.user.username is defined %}
+								<a href="" class=" dropdown-toggle text-light" data-bs-toggle="dropdown">
+									<ion-icon name="person-outline"></ion-icon>
+									{{app.user.username}}</a>
+								<ul class="dropdown-menu w100 bg_blue">
+									<li class="nav-item w100 p-2">
+										<a href="" class="nav-link">COMPTE</a>
 									</li>
-									{#%endif%#}
-								<!-- <li class="nav-item"><a href="user&action=login" class="nav-link text-light fw-bold">Se connecter</a></li> -->
-									<!-- <li class="nav-item"><a href="user&action=logout" class="nav-link text-light fw-bold">Se deconnecter</a></li> -->
-								</ul>
-								<div action="">
-									<div class="input-group">
-										<input autocomplete="off" onkeydown="touche(event)" id="word" name="word" type="text" class="form-control mx-1 input-search" placeholder="Mot à chercher">
-										<a href="javascript:search()" class="btn bg-gray">
-											<ion-icon name="search-outline"></ion-icon>
-										</a>
-										<a href="" class="mx-2 dropdown-toggle text-light" data-bs-toggle="dropdown">
-											<ion-icon name="notifications-outline"></ion-icon>
-											<sup class="text-light">(5)</sup>
-										</a>
-										<ul class="dropdown-menu w100 bg_gray">
-
-											<li class="nav-item p-2 w-100">Message - 01</li>
-											<li class="nav-item p-2 w-100">Message - 02</li>
-											<li class="nav-item p-2 w-100">Message - 03</li>
-											<li class="nav-item p-2 w-100">Message - 04</li>
-											<li class="nav-item p-2 w-100">Message - 05</li>
-											<li class="nav-item p-2 w-100">Message - 06</li>
-										</ul>
-										{%if app.user.username is defined %}
-											<a href="" class=" dropdown-toggle text-light" data-bs-toggle="dropdown">
-												<ion-icon name="person-outline"></ion-icon>
-												{{app.user.username}}</a>
-											<ul class="dropdown-menu w100 bg_blue">
-												<li class="nav-item w100 p-2">
-													<a href="" class="nav-link">COMPTE</a>
-												</li>
-												<li class="nav-item w100 p-2">
-													<a href="" class="nav-link">CHANGER LE MOT DE PASSE</a>
-												</li>
-												<li class="nav-item w100 p-2">
-													<a href="/logout" class="nav-link">DECONNEXION</a>
-												</li>
-											{% else %}
-												<a href="" class=" dropdown-toggle text-light" data-bs-toggle="dropdown">
-													<i class="fa fa-user fa-2x"></i>VISITEUR</a>
-												<ul class="dropdown-menu w100 bg_blue">
-													<li class="nav-item w100 p-2">
-														<a href="/login" class="nav-link">SE CONNECTER</a>
-													</li>
-													<li class="nav-item w100 p-2">
-														<a href="/register" class="nav-link">S'INSCRIRE</a>
-													</li>
-												</ul>
-											{% endif %}
-										</div>
-
-									</div>
-								</div>
-							</nav>
-							<div class="row">
-
-								<div id="aside-left" class="col-md-3 bg_gray print-none ">
-									<div class="center" id="logo">
-										<img src="{{asset('img/qdz_logo.svg')}}" width="100%" alt="" class="my-4">
-									</div>
-									<ul class="niveau-v1">
-										<li>
-											<a href="">CAISSE</a>
+									<li class="nav-item w100 p-2">
+										<a href="" class="nav-link">CHANGER LE MOT DE PASSE</a>
+									</li>
+									<li class="nav-item w100 p-2">
+										<a href="/logout" class="nav-link">DECONNEXION</a>
+									</li>
+								{% else %}
+									<a href="" class=" dropdown-toggle text-light" data-bs-toggle="dropdown">
+										<i class="fa fa-user fa-2x"></i>VISITEUR</a>
+									<ul class="dropdown-menu w100 bg_blue">
+										<li class="nav-item w100 p-2">
+											<a href="/login" class="nav-link">SE CONNECTER</a>
 										</li>
-										<li>
-											<a href="">CONTROLE<span>&#9660;</span>
-											</a>
-											<ul class="niveau-v2">
-												<li>
-													<a href="">CAISSE</a>
-												</li>
-												<li>
-													<a href="">STOCK</a>
-												</li>
-												<li>
-													<a href="">CHEQUE</a>
-												</li>
-											</ul>
-
-										</li>
-										<li>
-											<a href="">INVENTAIRE</a>
-										</li>
-										<li>
-											<a href="">FERMETURE</a>
+										<li class="nav-item w100 p-2">
+											<a href="/register" class="nav-link">S'INSCRIRE</a>
 										</li>
 									</ul>
-								</div>
-								<div id="section-bs" class="col-md-9 bg_blue"> {% block body%}{% endblock %}
-									</div>
-								</div>
-								<footer class="my-2">
-									<div class="row bg-dark justify-content-center py-4">
-										<div class="col-sm-3 col-md-3 col-lg-3 text-light">
-											<h5 class="text-blue text-uppercase">Nos Produits</h5>
-											<p>Bière</p>
-											<p>Vin</p>
-											<p>Jus</p>
-											<p>Electricité</p>
+								{% endif %}
+							</div>
 
-										</div>
-										<div class="col-sm-3 col-md-3 col-lg-3 text-light">
-											<h5 class="text-blue text-uppercase">Qui nous somme?</h5>
-											<p class="text-light">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Enim sequi mollitia voluptas recusandae
-												                        perspiciatis suscipit, possimus assumenda et minus ratione!</p>
-										</div>
-										<div class="col-sm-3 col-md-3 col-lg-3 text-light">
-											<h5 class="text-blue text-uppercase">Contacts
-											</h5>
-											<ul>
-												<li>
-													<ion-icon name="home-outline"></ion-icon>
-													DWWM</li>
-												<li>
-													<ion-icon name="mail-outline"></ion-icon>
-													dwwm@stage-afpa.fr</li>
-												<li>
-													<ion-icon name="phone-portrait-outline"></ion-icon>
-													012 785788</li>
-												<li>
-													<ion-icon name="print-outline"></ion-icon>
-													dwwm@stage-afpa.fr</li>
-											</ul>
+						</div>
+					</div>
+				</nav>
+				<div class="row">
 
-										</div>
-									</div>
-									<div class="row bg-dark justify-content-center align-items-center">
-										<div class="col-md-4 text-center">
-											<a href="" class="btn">
-												<ion-icon name="logo-facebook"></ion-icon>
-											</a>
-											<a href="" class="btn">
-												<ion-icon name="logo-twitter"></ion-icon>
-											</a>
-											<a href="" class="btn">
-												<ion-icon name="logo-linkedin"></ion-icon>
-											</a>
-										</div>
-									</div>
-									<div class="row my-2 bg-dark">
-										<div class="col-12">
-											<h5 class="text-center text-light py-2">
-												&copy Copyright DWWM 2023</h5>
-										</div>
+					<div id="aside-left" class="col-md-3 bg_gray print-none ">
+						<div class="center" id="logo">
+							<img src="{{asset('img/qdz_logo.svg')}}" width="100%" alt="" class="my-4">
+						</div>
+						<ul class="niveau-v1">
+							<li>
+								<a href="">CAISSE</a>
+							</li>
+							<li>
+								<a href="">CONTROLE<span>&#9660;</span>
+								</a>
+								<ul class="niveau-v2">
+									<li>
+										<a href="">CAISSE</a>
+									</li>
+									<li>
+										<a href="">STOCK</a>
+									</li>
+									<li>
+										<a href="">CHEQUE</a>
+									</li>
+								</ul>
 
-									</div>
-								</footer>
+							</li>
+							<li>
+								<a href="">INVENTAIRE</a>
+							</li>
+							<li>
+								<a href="">FERMETURE</a>
+							</li>
+						</ul>
+					</div>
+					<div id="section-bs" class="col-md-9 bg_blue"> {% block body%}{% endblock %}
+						</div>
+					</div>
+					<footer class="my-2">
+						<div class="row bg-dark justify-content-center py-4">
+							<div class="col-sm-3 col-md-3 col-lg-3 text-light">
+								<h5 class="text-blue text-uppercase">Nos Produits</h5>
+								<p>Bière</p>
+								<p>Vin</p>
+								<p>Jus</p>
+								<p>Electricité</p>
 
 							</div>
-							<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-							<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-							<script src="{{asset('js/myScript.js')}}"></script>
-							{%block script%}{%endblock%}
-						</body>
+							<div class="col-sm-3 col-md-3 col-lg-3 text-light">
+								<h5 class="text-blue text-uppercase">Qui nous somme?</h5>
+								<p class="text-light">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Enim sequi mollitia voluptas recusandae
+																					                        perspiciatis suscipit, possimus assumenda et minus ratione!</p>
+							</div>
+							<div class="col-sm-3 col-md-3 col-lg-3 text-light">
+								<h5 class="text-blue text-uppercase">Contacts
+								</h5>
+								<ul>
+									<li>
+										<ion-icon name="home-outline"></ion-icon>
+										DWWM</li>
+									<li>
+										<ion-icon name="mail-outline"></ion-icon>
+										dwwm@stage-afpa.fr</li>
+									<li>
+										<ion-icon name="phone-portrait-outline"></ion-icon>
+										012 785788</li>
+									<li>
+										<ion-icon name="print-outline"></ion-icon>
+										dwwm@stage-afpa.fr</li>
+								</ul>
 
-					</html>
+							</div>
+						</div>
+						<div class="row bg-dark justify-content-center align-items-center">
+							<div class="col-md-4 text-center">
+								<a href="" class="btn">
+									<ion-icon name="logo-facebook"></ion-icon>
+								</a>
+								<a href="" class="btn">
+									<ion-icon name="logo-twitter"></ion-icon>
+								</a>
+								<a href="" class="btn">
+									<ion-icon name="logo-linkedin"></ion-icon>
+								</a>
+							</div>
+						</div>
+						<div class="row my-2 bg-dark">
+							<div class="col-12">
+								<h5 class="text-center text-light py-2">
+									&copy Copyright DWWM 2023</h5>
+							</div>
+
+						</div>
+					</footer>
+
+				</div>
+				<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+				<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+				<script src="{{asset('js/myScript.js')}}"></script>
+				{%block script%}{%endblock%}</body>
+		</body>
+	</html>

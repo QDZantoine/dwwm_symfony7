@@ -109,7 +109,7 @@ class MenuController extends AbstractController
             $role = $menu->getRole();
             $icon = $menu->getIcon();
             $parentMenu = $menu->getParent();
-            $icon="<ion-icons name='$icon'></icon>";
+            $icon=($icon)?"<ion-icon class='text-dark' name='$icon'></ion-icon>":"";
             if ($parent == $parentMenu) {
                 $point = "";
                 for ($i = 1; $i <= $niveau; $i++) {
@@ -118,7 +118,7 @@ class MenuController extends AbstractController
                 $class=($niveau==0)?"fw-blod fs-5":"";
                 $html .= "<tr>";
                 $html.="<td class='center'><input type='checkbox'id='$id' name='check' value='$id' onClick='onlyOne(this)'></td>";
-                $html .= "<td class='$class'>$point $libelle</td><td>$url</td><td>$icon</td><td>$role</td>";
+                $html .= "<td class='$class'>$point $libelle</td><td>$url</td><td class='center'>$icon</td><td>$role</td>";
                 $html .= "</tr>";
                 $html .= $this->list_menu($menu, $niveau + 1, $menus);
             }
